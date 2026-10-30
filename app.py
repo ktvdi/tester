@@ -1,109 +1,108 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="My Dashboard",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    page_title="My Website",
+    layout="wide"
 )
 
 st.markdown("""
 <style>
-
-/* Sembunyikan navigasi bawaan Streamlit */
 [data-testid="stToolbar"],
 #MainMenu,
 footer,
 header,
-[data-testid="stDecoration"],
-[data-testid="collapsedControl"] {
+[data-testid="stDecoration"] {
     display: none !important;
 }
 
 /* Tombol hamburger */
-.menu-button {
+.menu-label {
     position: fixed;
-    top: 15px;
-    left: 20px;
-    z-index: 10000;
+    top: 12px;
+    right: 25px;
+    z-index: 10002;
     font-size: 28px;
-    cursor: pointer;
     color: white;
-    background: #1e293b;
-    padding: 5px 13px;
+    background: #172033;
+    padding: 5px 14px;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 /* Checkbox */
-#menu-toggle {
+#dropdown-menu {
     display: none;
 }
 
-/* Sidebar full height */
-.sidebar-custom {
+/* Dropdown */
+.dropdown {
     position: fixed;
-    top: 0;
-    left: -280px;
-    width: 260px;
-    height: 100vh;
-    background: #172033;
-    z-index: 9999;
-    padding: 75px 20px 20px;
-    transition: left 0.3s ease;
-    box-sizing: border-box;
-}
-
-/* Sidebar terbuka */
-#menu-toggle:checked ~ .sidebar-custom {
+    top: -100%;
     left: 0;
+    width: 100%;
+    height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
+    background: #172033;
+    padding: 75px 25px 25px;
+    box-sizing: border-box;
+    z-index: 10001;
+    transition: top 0.35s ease;
 }
 
-/* Link menu */
-.sidebar-custom a {
+/* Saat dibuka */
+#dropdown-menu:checked ~ .dropdown {
+    top: 0;
+}
+
+/* Menu link */
+.dropdown a {
     display: block;
+    padding: 18px;
     color: white;
     text-decoration: none;
-    padding: 15px;
-    margin-bottom: 8px;
-    border-radius: 8px;
+    border-bottom: 1px solid #334155;
+    font-size: 17px;
 }
 
-.sidebar-custom a:hover {
+.dropdown a:hover {
     background: #334155;
 }
 
-/* Overlay */
-.overlay {
-    display: none;
+/* Tombol close */
+.close-menu {
     position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 9998;
+    top: 12px;
+    right: 25px;
+    z-index: 10003;
+    display: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
 }
 
-#menu-toggle:checked ~ .overlay {
+#dropdown-menu:checked ~ .close-menu {
     display: block;
 }
 
+#dropdown-menu:checked ~ .menu-label {
+    display: none;
+}
 </style>
 
-<input type="checkbox" id="menu-toggle">
+<input type="checkbox" id="dropdown-menu">
 
-<label for="menu-toggle" class="menu-button">
-    ☰
-</label>
+<label for="dropdown-menu" class="menu-label">☰</label>
+<label for="dropdown-menu" class="close-menu">✕</label>
 
-<div class="sidebar-custom">
-    <h2 style="color:white;">MY DASHBOARD</h2>
-    <hr>
+<div class="dropdown">
+    <h2 style="color:white;">NAVIGATION</h2>
     <a href="?page=home">🏠 Home</a>
     <a href="?page=dashboard">📊 Dashboard</a>
     <a href="?page=data">📁 Data</a>
     <a href="?page=settings">⚙️ Settings</a>
 </div>
-
-<label for="menu-toggle" class="overlay"></label>
-
 """, unsafe_allow_html=True)
 
-st.title("My Dashboard")
-st.write("Selamat datang di aplikasi Streamlit.")
+st.title("My Website")
+st.write("Konten utama aplikasi")
