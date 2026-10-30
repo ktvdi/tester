@@ -1,4 +1,3 @@
-
 import streamlit as st
 
 st.set_page_config(
@@ -7,7 +6,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Daftar halaman
+# DAFTAR HALAMAN
 pages = {
     "Home": "pages/home.py",
     "Dashboard": "pages/dashboard.py",
@@ -15,7 +14,7 @@ pages = {
     "Settings": "pages/settings.py"
 }
 
-# Navigasi native Streamlit
+# NAVIGASI STREAMLIT
 pg = st.navigation(
     [
         st.Page(path, title=name)
@@ -38,39 +37,52 @@ footer {
     display: none !important;
 }
 
-/* Tombol menu */
+/* Tombol hamburger */
 div.st-key-menu_button {
     position: fixed;
-    top: 10px;
+    top: 12px;
     right: 25px;
-    z-index: 1000;
+    z-index: 10003;
 }
 
-/* Tombol hamburger */
 div.st-key-menu_button button {
     background: #172033;
     color: white;
     border: none;
     font-size: 25px;
     border-radius: 8px;
+    padding: 5px 15px;
 }
 
-/* Dropdown container */
+div.st-key-menu_button button:hover {
+    background: #334155;
+    color: white;
+    border: none;
+}
+
+/* Dropdown full width */
 div.st-key-menu_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    max-height: 100vh;
+    overflow-y: auto;
+    box-sizing: border-box;
     background: #172033;
-    padding: 25px;
+    padding: 75px 30px 30px;
+    z-index: 10001;
     border-radius: 0 0 12px 12px;
-    margin-bottom: 20px;
 }
 
-/* Tombol menu dropdown */
+/* Tombol navigasi */
 div.st-key-menu_container button {
     width: 100%;
     background: transparent;
     color: white;
     border: none;
     text-align: left;
-    padding: 12px;
+    padding: 15px;
     font-size: 17px;
 }
 
@@ -79,7 +91,7 @@ div.st-key-menu_container button:hover {
     color: white;
 }
 
-/* Konten */
+/* Konten utama */
 .block-container {
     padding-top: 4rem;
 }
@@ -87,11 +99,13 @@ div.st-key-menu_container button:hover {
 </style>
 """, unsafe_allow_html=True)
 
-# Status dropdown
+
+# STATUS MENU
 if "menu_open" not in st.session_state:
     st.session_state.menu_open = False
 
-# Tombol hamburger
+
+# TOMBOL HAMBURGER
 if st.button(
     "✕" if st.session_state.menu_open else "☰",
     key="menu_button"
@@ -99,7 +113,8 @@ if st.button(
     st.session_state.menu_open = not st.session_state.menu_open
     st.rerun()
 
-# Dropdown
+
+# DROPDOWN
 if st.session_state.menu_open:
 
     with st.container(key="menu_container"):
@@ -109,11 +124,19 @@ if st.session_state.menu_open:
             unsafe_allow_html=True
         )
 
+        st.markdown(
+            "<p style='color:#94a3b8;'>Choose your page</p>",
+            unsafe_allow_html=True
+        )
+
         for name, path in pages.items():
 
             if st.button(name, key=f"nav_{name}"):
+
                 st.session_state.menu_open = False
+
                 st.switch_page(path)
 
-# Jalankan halaman
+
+# JALANKAN HALAMAN
 pg.run()
