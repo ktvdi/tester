@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 st.set_page_config(
@@ -6,24 +7,21 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# DAFTAR HALAMAN
-pages = {
-    "Home": "pages/home.py",
-    "Dashboard": "pages/dashboard.py",
-    "Data": "pages/data.py",
-    "Settings": "pages/settings.py"
-}
+# ==================================
+# SESSION STATE
+# ==================================
 
-# NAVIGASI STREAMLIT
-pg = st.navigation(
-    [
-        st.Page(path, title=name)
-        for name, path in pages.items()
-    ],
-    position="hidden"
-)
+if "menu_open" not in st.session_state:
+    st.session_state.menu_open = False
 
-# CSS
+if "current_page" not in st.session_state:
+    st.session_state.current_page = "Home"
+
+
+# ==================================
+# CSS DARK NAVY
+# ==================================
+
 st.markdown("""
 <style>
 
@@ -40,7 +38,7 @@ footer {
 /* Tombol hamburger */
 div.st-key-menu_button {
     position: fixed;
-    top: 12px;
+    top: 10px;
     right: 25px;
     z-index: 10003;
 }
@@ -54,34 +52,28 @@ div.st-key-menu_button button {
     padding: 5px 15px;
 }
 
-div.st-key-menu_button button:hover {
-    background: #334155;
-    color: white;
-    border: none;
-}
-
-/* Dropdown full width */
+/* Dropdown */
 div.st-key-menu_container {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
+    height: auto;
     max-height: 100vh;
     overflow-y: auto;
     box-sizing: border-box;
     background: #172033;
     padding: 75px 30px 30px;
     z-index: 10001;
-    border-radius: 0 0 12px 12px;
 }
 
 /* Tombol navigasi */
 div.st-key-menu_container button {
     width: 100%;
+    text-align: left;
     background: transparent;
     color: white;
     border: none;
-    text-align: left;
     padding: 15px;
     font-size: 17px;
 }
@@ -91,7 +83,7 @@ div.st-key-menu_container button:hover {
     color: white;
 }
 
-/* Konten utama */
+/* Konten */
 .block-container {
     padding-top: 4rem;
 }
@@ -100,12 +92,10 @@ div.st-key-menu_container button:hover {
 """, unsafe_allow_html=True)
 
 
-# STATUS MENU
-if "menu_open" not in st.session_state:
-    st.session_state.menu_open = False
+# ==================================
+# HAMBURGER BUTTON
+# ==================================
 
-
-# TOMBOL HAMBURGER
 if st.button(
     "✕" if st.session_state.menu_open else "☰",
     key="menu_button"
@@ -114,7 +104,10 @@ if st.button(
     st.rerun()
 
 
-# DROPDOWN
+# ==================================
+# DROPDOWN MENU
+# ==================================
+
 if st.session_state.menu_open:
 
     with st.container(key="menu_container"):
@@ -129,14 +122,47 @@ if st.session_state.menu_open:
             unsafe_allow_html=True
         )
 
-        for name, path in pages.items():
+        menu_items = [
+            "🏠 Home",
+            "📊 Dashboard",
+            "📁 Data",
+            "⚙️ Settings"
+        ]
 
-            if st.button(name, key=f"nav_{name}"):
+        for item in menu_items:
+
+            if st.button(item, key=f"nav_{item}"):
+
+                st.session_state.current_page = (
+                    item.split(" ", 1)[1]
+                )
 
                 st.session_state.menu_open = False
+                st.rerun()
 
-                st.switch_page(path)
 
+# ==================================
+# PAGE CONTENT
+# ==================================
 
-# JALANKAN HALAMAN
-pg.run()
+page = st.session_state.current_page
+
+if page == "Home":
+
+    st.title("🏠 Home")
+    st.write("Selamat datang di aplikasi saya.")
+
+elif page == "Dashboard":
+
+    st.title("📊 Dashboard")
+    st.write("Halaman Dashboard")
+
+elif page == "Data":
+
+    st.title("📁 Data")
+    st.write("Halaman Data")
+
+elif page == "Settings":
+
+    st.title("⚙️ Settings")
+    st.write("Halaman Pengaturan")
